@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IRS Tax Debt Relief Assessment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            min-height: 600px;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #e9ecef;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%);
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .card {
+            padding: 40px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .card.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .step-number {
+            font-size: 14px;
+            color: #6366f1;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            font-weight: 400;
+        }
+
+        .options {
+            margin: 30px 0;
+        }
+
+        .option {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .option:hover {
+            border-color: #6366f1;
+            background: #f3f4f6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+        }
+
+        .option.selected {
+            border-color: #6366f1;
+            background: #eef2ff;
+        }
+
+        .option-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+
+        .option-description {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .radio-custom {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid #d1d5db;
+            border-radius: 50%;
+            background: white;
+            transition: all 0.2s ease;
+        }
+
+        .option.selected .radio-custom {
+            border-color: #6366f1;
+        }
+
+        .option.selected .radio-custom::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #6366f1;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .buttons {
+            display: flex;
+            gap: 16px;
+            margin-top: 40px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #4b5563;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .emergency-notice {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .emergency-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .emergency-text {
+            font-size: 14px;
+            color: #991b1b;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #1e40af;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 60px 40px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #e5e7eb;
+            border-top-color: #6366f1;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .results {
+            padding: 40px;
+            text-align: center;
+            display: none;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .result-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+        }
+
+        .result-icon svg {
+            width: 40px;
+            height: 40px;
+            color: white;
+        }
+
+        .result-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+        }
+
+        .result-description {
+            font-size: 16px;
+            color: #6b7280;
+            margin-bottom: 32px;
+        }
+
+        .result-programs {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        .program-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .program-item:last-child {
+            border-bottom: none;
+        }
+
+        .program-badge {
+            width: 40px;
+            height: 40px;
+            background: #eef2ff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #6366f1;
+        }
+
+        .program-info {
+            flex: 1;
+        }
+
+        .program-name {
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 2px;
+        }
+
+        .program-benefit {
+            font-size: 14px;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+
+        <!-- Card 1: Welcome -->
+        <div class="card active" id="card1">
+            <div class="card-header">
+                <div class="step-number">Welcome</div>
+                <h1>Get Your IRS Tax Debt Relief Options</h1>
+                <p class="subtitle">Answer a few questions to discover which relief programs you qualify for</p>
+            </div>
+            
+            <div class="emergency-notice">
+                <svg class="emergency-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+                <div class="emergency-text">
+                    <strong>Facing immediate collection action?</strong><br>
+                    If you have a wage garnishment, bank levy, or property seizure, we'll prioritize urgent relief options.
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="btn btn-primary" onclick="nextCard()">
+                    Get Started
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Card 2: Emergency Situation -->
+        <div class="card" id="card2">
+            <div class="card-header">
+                <div class="step-number">Step 1 of 6</div>
+                <h1>Are you facing any immediate IRS collection actions?</h1>
+                <p class="subtitle">This helps us prioritize urgent relief options</p>
+            </div>
+
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 'emergency', 'yes')">
+                    <div class="option-title">Yes, I need immediate help</div>
+                    <div class="option-description">Wage garnishment, bank levy, or asset seizure is active or imminent</div>
+                    <div class="radio-custom"></div>
+                </div>
+                
+                <div class="option" onclick="selectOption(this, 'emergency', 'no')">
+                    <div class="option-title">No immediate threats</div>
+                    <div class="option-description">I have time to explore my options</div>
+                    <div class="radio-custom"></div>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="btn btn-secondary" onclick="previousCard()">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path>
+                    </svg>
+                    Back
+                </button>
+                <button class="btn btn-primary" onclick="nextCard()" id="nextBtn2" disabled>
+                    Next
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Card 3: Tax Returns Filed -->
+        <div class="card" id="card3">
+            <div class="card-header">
+                <div class="step-number">Step 2 of 6</div>
+                <h1>Have you filed all required tax returns?</h1>
+                <p class="subtitle">Most IRS relief programs require all returns to be filed</p>
+            </div>
+
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 'returns', 'yes')">
+                    <div class="option-title">Yes, all returns are filed</div>
+                    <div class="option-description">I'm up to date with all my tax filings</div>
+                    <div class="radio-custom"></div>
+                </div>
+                
+                <div class="option" onclick="selectOption(this, 'returns', 'no')">
+                    <div class="option-title">No, I have unfiled returns</div>
+                    <div class="option-description">I need to file one or more past returns</div>
+                    <div class="radio-custom"></div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong>Important:</strong> You must file all required returns before qualifying for most relief programs. We can help you understand what needs to be filed.
+            </div>
+
+            <div class="buttons">
+                <button class="btn btn-secondary" onclick="previousCard()">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path>
+                    </svg>
+                    Back
+                </button>
+                <button class="btn btn-primary" onclick="nextCard()" id="nextBtn3" disabled>
+                    Next
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Card 4: Debt Amount -->
+        <div class="card" id="card4">
+            <div class="card-header">
+                <div class="step-number">Step 3 of 6</div>
+                <h1>How much do you owe in total?</h1>
+                <p class="subtitle">Include all tax years, penalties, and interest</p>
+            </div>
+
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 'debt', 'under10k')">
+                    <div class="option-title">Under $10,000</div>
+                    <div class="option-description">Qualifies for guaranteed installment agreement</div>
+                    <div class="radio-custom"></div>
+                </div>
+                
+                <div class="option" onclick="selectOption(this, 'debt', 'under50k')">
+                    <div class="option-title">$10,000 - $50,000</div>
+                    <div class="option-description">Eligible for streamlined options</div>
+                    <div class="radio-custom"></div>
+                </div>
+                
+                <div class="option" onclick="selectOption(this, 'debt', 'over50k')">
+                    <div class="option-title">Over $50,000</div>
+                    <div class="option-description">Full financial disclosure required</div>
+                    <div class="radio-custom"></div>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="btn btn-secondary" onclick="previousCard()">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path>
+                    </svg>
+                    Back
+                </button>
+                <button class="btn btn-primary" onclick="nextCard()" id="nextBtn4" disabled>
+                    Next
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Card 5: Financial Situation -->
+        <div class="card" id="card5">
+            <div class="card-header">
+                <div class="step-number">Step 4 of 6</div>
+                <h1>What's your current financial situation?</h1>
+                <p class="subtitle">This helps determine which programs fit your circumstances</p>
+            </div>
+
+            <div class="options">
+                <div class="option" onclick="selectOption(this, 'financial', 'hardship')">
+                    <div class="option-title">Experiencing financial hardship</div>
+                    <div class="option-description">Unable to pay basic living expenses</div>
+                    <div class="radio-custom"></div>
+                </div>
+                
+                <div class="option" onclick="selectOption(this, 'financial', 'tight')">
+                    <div class="option-title">Tight budget but managing</div>
+                    <div class="option-description">Can afford some payment but not full amount</div>
+                    <div class="radio-custom"></div>
+                </div>
+                
+                <div class="option" onclick="selectOption(this, 'financial', 'stable')">
+                    <div class="option-title">Financially stable</div>
+                    <div class="option-description">Can make regular payments</div>
+                    <div class="radio-custom"></div>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="btn btn-secondary" onclick="previousCard()">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path>
+                    </svg>
+                    Back
+                </button>
+                <button class="btn btn-primary" onclick="nextCard()" id="nextBtn5" disabled>
+                    Next
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Card 6: Special Circumstances -->
+        <div class="card" id="card6">
+            <div class="card-header">
+                <div class="step-number">Step 5 of 6</div>
+                <h1>Do any special circumstances apply?</h1>
+                <p class="subtitle">Select all that apply to your situation</p>
+            </div>
+
+            <div class="options">
+                <div class="option" onclick="toggleOption(this, 'circumstances', 'penalties')">
+                    <div class="option-title">Mostly penalties (not actual tax)</div>
+                    <div class="option-description">May qualify for penalty abatement</div>
+                    <div class="radio-custom"></div>
+                </div>
+                
+                <div class="option" onclick="toggleOption(this, 'circumstances', 'spouse')">
+                    <div class="option-title">Joint return with ex-spouse</div>
+                    <div class="option-description">Possible innocent spouse relief</div>
+                    <div class="radio-custom"></div>
+                </div>
+                
+                <div class="option" onclick="toggleOption(this, 'circumstances', 'old')">
+                    <div class="option-title">Tax debt over 3 years old</div>
+                    <div class="option-description">May be dischargeable in bankruptcy</div>
+                    <div class="radio-custom"></div>
+                </div>
+                
+                <div class="option" onclick="toggleOption(this, 'circumstances', 'none')">
+                    <div class="option-title">None of these apply</div>
+                    <div class="option-description">Continue with standard options</div>
+                    <div class="radio-custom"></div>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="btn btn-secondary" onclick="previousCard()">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path>
+                    </svg>
+                    Back
+                </button>
+                <button class="btn btn-primary" onclick="showResults()">
+                    Get My Options
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading Screen -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <h2 style="font-size: 24px; margin-bottom: 8px;">Analyzing Your Options...</h2>
+            <p style="color: #6b7280;">Checking eligibility for IRS relief programs</p>
+        </div>
+
+        <!-- Results Screen -->
+        <div class="results" id="results">
+            <div class="result-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+            
+            <h2 class="result-title">Your Tax Relief Options</h2>
+            <p class="result-description">Based on your answers, you may qualify for these programs:</p>
+            
+            <div class="result-programs" id="programsList">
+                <!-- Programs will be inserted here -->
+            </div>
+            
+            <button class="btn btn-primary" style="width: 100%;">
+                Get Detailed Analysis
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let currentCard = 1;
+        const totalCards = 6;
+        const answers = {};
+
+        function updateProgress() {
+            const progress = ((currentCard - 1) / totalCards) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function showCard(cardNumber) {
+            // Hide all cards
+            document.querySelectorAll('.card').forEach(card => {
+                card.classList.remove('active');
+            });
+            document.querySelector('.loading').classList.remove('active');
+            document.querySelector('.results').classList.remove('active');
+            
+            // Show current card
+            const card = document.getElementById('card' + cardNumber);
+            if (card) {
+                card.classList.add('active');
+            }
+            
+            updateProgress();
+        }
+
+        function nextCard() {
+            if (currentCard < totalCards) {
+                currentCard++;
+                showCard(currentCard);
+            }
+        }
+
+        function previousCard() {
+            if (currentCard > 1) {
+                currentCard--;
+                showCard(currentCard);
+            }
+        }
+
+        function selectOption(element, category, value) {
+            // Remove selected class from all options in this group
+            element.parentElement.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            element.classList.add('selected');
+            
+            // Store answer
+            answers[category] = value;
+            
+            // Enable next button
+            const nextBtn = document.getElementById('nextBtn' + currentCard);
+            if (nextBtn) {
+                nextBtn.disabled = false;
+            }
+        }
+
+        function toggleOption(element, category, value) {
+            if (value === 'none') {
+                // If "none" is selected, deselect all others
+                element.parentElement.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                element.classList.add('selected');
+                answers[category] = ['none'];
+            } else {
+                // Toggle the clicked option
+                element.classList.toggle('selected');
+                
+                // Remove "none" if it was selected
+                const noneOption = element.parentElement.querySelector('.option:last-child');
+                noneOption.classList.remove('selected');
+                
+                // Update answers array
+                if (!answers[category]) answers[category] = [];
+                if (answers[category].includes('none')) {
+                    answers[category] = [];
+                }
+                
+                if (element.classList.contains('selected')) {
+                    answers[category].push(value);
+                } else {
+                    answers[category] = answers[category].filter(v => v !== value);
+                }
+            }
+        }
+
+        function showResults() {
+            document.querySelector('.card.active').classList.remove('active');
+            document.querySelector('.loading').classList.add('active');
+            
+            // Simulate processing
+            setTimeout(() => {
+                document.querySelector('.loading').classList.remove('active');
+                document.querySelector('.results').classList.add('active');
+                displayResults();
+            }, 2000);
+        }
+
+        function displayResults() {
+            const programs = [];
+            
+            // Logic to determine eligible programs
+            if (answers.returns === 'no') {
+                programs.push({
+                    rank: '!',
+                    name: 'File Missing Returns First',
+                    benefit: 'Required before any relief program'
+                });
+            } else {
+                // Check for Offer in Compromise
+                if (answers.financial === 'hardship' || 
+                    (answers.financial === 'tight' && answers.debt !== 'under10k')) {
+                    programs.push({
+                        rank: '1',
+                        name: 'Offer in Compromise',
+                        benefit: 'Potentially settle for less than you owe'
+                    });
+                }
+                
+                // Check for Currently Not Collectible
+                if (answers.financial === 'hardship') {
+                    programs.push({
+                        rank: '2',
+                        name: 'Currently Not Collectible',
+                        benefit: 'Temporary suspension of collection'
+                    });
+                }
+                
+                // Check for Installment Agreement
+                if (answers.debt === 'under10k') {
+                    programs.push({
+                        rank: '3',
+                        name: 'Guaranteed Installment Agreement',
+                        benefit: 'Automatic approval for payment plan'
+                    });
+                } else if (answers.debt === 'under50k') {
+                    programs.push({
+                        rank: '3',
+                        name: 'Streamlined Installment Agreement',
+                        benefit: 'Payment plan without financial disclosure'
+                    });
+                } else {
+                    programs.push({
+                        rank: '3',
+                        name: 'Installment Agreement',
+                        benefit: 'Monthly payment plan based on ability'
+                    });
+                }
+                
+                // Check special circumstances
+                if (answers.circumstances && answers.circumstances.includes('penalties')) {
+                    programs.push({
+                        rank: '★',
+                        name: 'Penalty Abatement',
+                        benefit: 'Remove penalties from your debt'
+                    });
+                }
+                
+                if (answers.circumstances && answers.circumstances.includes('spouse')) {
+                    programs.push({
+                        rank: '★',
+                        name: 'Innocent Spouse Relief',
+                        benefit: 'Relief from spouse\'s tax liability'
+                    });
+                }
+            }
+            
+            // Display programs
+            const programsList = document.getElementById('programsList');
+            programsList.innerHTML = programs.map(program => `
+                <div class="program-item">
+                    <div class="program-badge">${program.rank}</div>
+                    <div class="program-info">
+                        <div class="program-name">${program.name}</div>
+                        <div class="program-benefit">${program.benefit}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>

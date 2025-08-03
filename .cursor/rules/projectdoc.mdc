@@ -1,0 +1,23 @@
+---
+alwaysApply: true
+
+description:
+
+
+Every time a prompt reply, a file change or a update to the system, architecutre etc is made, you are repsonsible to update the project knoledge doc if you feel it is neccisarry for the next prompt or ai interation to be updated. note this is only for LARGE CHANGES. for example, once the directory or file structure is finalized, lets add it to the project knoledge doc and update it as needed. 
+
+
+
+
+Keep your replied short and be intentional to fix issues or bugs the right way, avoid creating unneccsisarry pages. 
+
+
+globs:
+
+
+
+---
+
+
+
+
